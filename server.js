@@ -1,12 +1,7 @@
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const http = require('http');
-const https = require('https');
-
-const app = express();
-const domain = "";
-
+const path = require("path");
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
 // Certificate
 const privateKey = fs.readFileSync('/etc/letsencrypt/live/' + domain + '/privkey.pem', 'utf8');
 const certificate = fs.readFileSync('/etc/letsencrypt/live/' + domain + '/cert.pem', 'utf8');
@@ -18,26 +13,27 @@ const credentials = {
 	ca: ca
 };
 
-// Starting both http & https servers
-const httpServer = http.createServer(app);
-const server = https.createServer(credentials, app);
+var express = require('express');
+var app = express();
 
-app.use(express.static('assets'));
+// your express configuration here
 
-/*
-httpServer.get('*', (req, res) => {
-	res.redirect('https://' + req.headers.host + req.url);
-})
-*/
+var httpsServer = https.createServer(credentials, app);
 
-app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, 'index.html'));
-})
 
-httpServer.listen(80, () => {
-	console.log('HTTP Server running on port 80');
+function toHttps(req, res) {
+	if(req.protocol !== "https"){
+      const fullUrl = 'https://' + req.headers.host + req.url;
+      res.redirect(fullUrl);
+   }
+}
+
+app.use(express.static(path.join(__dirname, "assets")));
+
+app.get('*', (req, res) =>  {
+	res.sendFile(path.join(__dirname, "/index.html"));
 });
 
-server.listen(443, () => {
-	console.log('HTTPS Server running on port 443');
-});
+
+httpsServer.listen(443);
+app.listen(80);
