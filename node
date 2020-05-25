@@ -1,0 +1,10 @@
+#!/bin/bash
+
+apt update
+apt install nodejs npm certbot -y 
+
+mkdir .well-known
+mkdir .well-known/acme-challenge
+
+
+#https://itnext.io/node-express-letsencrypt-generate-a-free-ssl-certificate-and-run-an-https-server-in-5-minutes-a730fbe528ca

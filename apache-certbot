@@ -1,0 +1,7 @@
+#!/bin/bash
+
+certbot --apache
+
+certbot certonly --apache
+
+certbot renew --dry-run

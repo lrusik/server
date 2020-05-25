@@ -1,0 +1,6 @@
+#!/bin/bash
+
+apt update
+apt install mysql-server mysql-client libmysqlclient-dev apache2 apache2-utils libexpat1 ssl-sert php7.2 libapache2-mod-php7.2 python3 python3-certbot-apache certbot -y
+ 
+#https://certbot.eff.org/lets-encrypt/ubuntubionic-apache
