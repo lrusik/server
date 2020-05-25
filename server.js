@@ -24,6 +24,16 @@ const server = https.createServer(credentials, app);
 
 app.use(express.static('assets'));
 
+/*
+httpServer.get('*', (req, res) => {
+	res.redirect('https://' + req.headers.host + req.url);
+})
+*/
+
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, 'index.html'));
+})
+
 httpServer.listen(80, () => {
 	console.log('HTTP Server running on port 80');
 });
@@ -31,11 +41,3 @@ httpServer.listen(80, () => {
 server.listen(443, () => {
 	console.log('HTTPS Server running on port 443');
 });
-
-httpServer.get('*', (req, res) => {
-	res.redirect('https://' + req.headers.host + req.url);
-})
-
-server.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, 'index.html'));
-})
