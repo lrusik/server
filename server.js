@@ -3,6 +3,8 @@ var fs = require('fs');
 var http = require('http');
 var https = require('https');
 // Certificate
+const domain = "";
+
 const privateKey = fs.readFileSync('/etc/letsencrypt/live/' + domain + '/privkey.pem', 'utf8');
 const certificate = fs.readFileSync('/etc/letsencrypt/live/' + domain + '/cert.pem', 'utf8');
 const ca = fs.readFileSync('/etc/letsencrypt/live/' + domain + '/chain.pem', 'utf8');
@@ -31,6 +33,7 @@ function toHttps(req, res) {
 app.use(express.static(path.join(__dirname, "assets")));
 
 app.get('*', (req, res) =>  {
+	toHttps(req, res);
 	res.sendFile(path.join(__dirname, "/index.html"));
 });
 
